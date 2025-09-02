@@ -35,4 +35,8 @@ module "vm" {
   ipv4_gateway    = each.value.ipv4_gateway
   dns_server_list = each.value.dns_server_list
   time_zone       = each.value.time_zone
+
+  domain          = each.value.domain
+  username        = each.value.username
+  ssh_key         = each.value.ssh_key
 }

@@ -90,3 +90,21 @@ variable "time_zone" {
   type        = string
   default     = "85"
 }
+
+variable "domain" {
+  description = "The domain for the new VM (name + domain = FQDN)"
+  type        = string
+  default     = ""
+}
+
+variable "username" {
+  description = "The username for cloud-init to provision"
+  type        = string
+  default     = ""
+}
+
+variable "ssh_key" {
+  description = "The SSH key for the user that is provisioned with cloud-init"
+  type        = string
+  default     = ""
+}

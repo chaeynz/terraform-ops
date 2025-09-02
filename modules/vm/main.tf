@@ -33,21 +33,37 @@ locals {
   is_windows_template = can(regex("(?i)windows", data.vsphere_virtual_machine.template.guest_id))
 }
 
+data "template_file" "cloud_init" {
+  template = file("${path.module}/templates/cloud-init.yaml")
+  vars = {
+    hostname = var.name
+    domain   = var.domain
+    username = var.username
+    ssh_key  = var.ssh_key
+  }
+}
+
 resource "vsphere_virtual_machine" "vm" {
   name                   = var.name
   datastore_id           = data.vsphere_datastore.datastore.id
   guest_id               = data.vsphere_virtual_machine.template.guest_id
   resource_pool_id       = var.resource_pool == null ? data.vsphere_compute_cluster.cluster.resource_pool_id : data.vsphere_resource_pool.default[0].id
-  num_cpus               = 2
+  num_cpus               = var.num_cpus
   #cpu_hot_add_enabled    = true
   #cpu_hot_remove_enabled = true
-  memory                 = 2048
+  memory                 = var.memory
   #memory_hot_add_enabled = true
   firmware               = "efi"
   folder                 = var.folder
   network_interface {
     network_id = data.vsphere_network.network.id
   }
+  extra_config = {
+      "guestinfo.userdata"          = "${base64gzip(data.template_file.cloud_init.rendered)}"
+      "guestinfo.userdata.encoding" = "gzip+base64"
+    }
+
+
   disk {
     label = "disk0"
     size  = var.disk_size
