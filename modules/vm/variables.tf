@@ -57,7 +57,7 @@ variable "template" {
 variable "linked_clone" {
   description = "Whether to create a linked clone"
   type        = bool
-  default     = true
+  default     = false
 }
 
 
