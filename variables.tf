@@ -1,3 +1,18 @@
+variable "vsphere_user" {
+  description = "The username to use when connecting to vSphere"
+  type        = string
+}
+
+variable "vsphere_password" {
+  description = "The password to use when connecting to vSphere"
+  type        = string
+}
+
+variable "vsphere_server" {
+  description = "The vSphere server to connect to"
+  type        = string
+}
+
 variable "virtual_machines" {
   description = "The list of virtual machines to create"
   type = map(object({
