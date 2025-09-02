@@ -2,7 +2,13 @@ terraform {
   backend "s3" {}
 }
 
-provider "vsphere" {}
+provider "vsphere" {
+  vsphere_server       = var.vsphere_server
+  user                 = var.vsphere_user
+  password             = var.vsphere_password
+  allow_unverified_ssl = true
+  api_timeout          = 10
+}
 
 module "vm" {
   for_each = var.virtual_machines
